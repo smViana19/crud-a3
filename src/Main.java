@@ -1,7 +1,15 @@
 import java.util.List;
 import java.util.Scanner;
+/**
+ * Classe principal que executa o menu de interação com o sistema CRUD de Carros.
+ */
 
 public class Main {
+     /**
+     * Método principal que exibe um menu interativo para salvar, listar, editar e excluir carros.
+     *
+     * @param args Argumentos da linha de comando (não utilizados)
+     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int opcao;
@@ -18,7 +26,8 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                    scanner.nextLine(); 
+                // Cadastro de novo carro
+                    scanner.nextLine();  // Limpa buffer
                     System.out.print("ID: ");
                     int id = scanner.nextInt();
                     scanner.nextLine();
@@ -36,6 +45,7 @@ public class Main {
                     break;
 
                 case 2:
+                  // Listagem dos carros cadastrados
                     List<Carro> carros = Carro.listar();
                     if (carros.isEmpty()) {
                         System.out.println("Nenhum carro cadastrado.");
@@ -48,6 +58,7 @@ public class Main {
                     break;
 
                 case 3:
+                  // Edição de um carro existente
                     System.out.print("ID do carro para editar: ");
                     int idEditar = scanner.nextInt();
                     scanner.nextLine();
@@ -77,16 +88,19 @@ public class Main {
                     break;
 
                 case 4:
+                  // Exclusão de um carro
                     System.out.print("ID do carro para excluir: ");
                     int idExcluir = scanner.nextInt();
                     Carro.excluir(idExcluir);
                     break;
 
                 case 0:
+                // Encerrar programa
                     System.out.println("Saindo...");
                     break;
 
                 default:
+                // Opção inválida
                     System.out.println("Opção inválida.");
             }
         } while (opcao != 0);
