@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Scanner;
 
 public class Main {
@@ -16,6 +17,10 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println("Logica para salvar");
+//                    File arquivo = new File("carro");
+//                    if(!arquivo.exists()) {
+//
+//                    }
                 case 2:
                     System.out.println("Logica para lsitar");
                 case 3:

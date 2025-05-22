@@ -1,3 +1,5 @@
+import java.util.List;
+
 public class Carro {
     private int id;
     private String nome;
@@ -12,6 +14,22 @@ public class Carro {
         this.ano = ano;
         this.marca = marca;
     }
+
+
+    public void salvar() {
+
+    }
+
+    public List<Carro> listar() {
+        return null;
+    }
+
+    public void editar() {
+    }
+
+    public void excluir() {
+    }
+
 
     public int getId() {
         return id;
