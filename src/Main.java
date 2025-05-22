@@ -17,10 +17,12 @@ public class Main {
             switch (opcao) {
                 case 1:
                     System.out.println("Logica para salvar");
-//                    File arquivo = new File("carro");
-//                    if(!arquivo.exists()) {
-//
-//                    }
+
+                    /**
+                     * Exemplo em baixo de como vai ser mais ou menos;
+                     */
+                    Carro carro = new Carro(1, "Palio", "Vermelho", "2001", "Fiat");
+                    carro.salvar();
                 case 2:
                     System.out.println("Logica para lsitar");
                 case 3:
