@@ -1,42 +1,55 @@
+import Exceptions.CamposInvalidosException;
+
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Classe que representa um carro e permite realizar operações básicas de CRUD.
  */
 public class Carro {
-    // Lista estática para armazenar os carros cadastrados
-    private static List<Carro> carros = new ArrayList<>(); 
+    private static List<Carro> carros = new ArrayList<>();
     private int id;
     private String nome;
     private String cor;
-    private String ano;
+    private int ano;
     private String marca;
-     /**
-     * Construtor da classe Carro.
-     *
-     * @param id    Identificador do carro
-     * @param nome  Nome ou modelo do carro
-     * @param cor   Cor do carro
-     * @param ano   Ano de fabricação
-     * @param marca Marca do carro
-     */
 
-    public Carro(int id, String nome, String cor, String ano, String marca) {
+    public Carro(int id, String nome, String cor, int ano, String marca) {
         this.id = id;
         this.nome = nome;
         this.cor = cor;
         this.ano = ano;
         this.marca = marca;
     }
- /**
+
+    /**
      * Salva o carro na lista estática de carros.
      */
 
-    public void salvar() {
+    public void salvar() throws CamposInvalidosException {
+        File diretorio = new File("crud-a3/src/arquivos");
+        if (!diretorio.exists()) {
+            diretorio.mkdirs();
+        }
+
+        File arquivo = new File(diretorio, "carros.txt");
+        validaCampos();
+
+        try (FileWriter escreverArquivo = new FileWriter(arquivo, true)) {
+            escreverArquivo.write("Id: " + getId() + " | Nome: " + getNome() + " | Cor: " + getCor() + " | Ano: " + getAno() + " | Marca: " + getMarca() + "\n");
+        } catch (Exception e) {
+            System.out.println("Erro ao criar o arquivo: " + e.getMessage());
+        }
+
         carros.add(this);
+
         System.out.println("Carro salvo com sucesso.");
     }
-     /**
+
+    /**
      * Retorna a lista de carros cadastrados.
      *
      * @return Lista de carros
@@ -45,7 +58,8 @@ public class Carro {
     public static List<Carro> listar() {
         return carros;
     }
-     /**
+
+    /**
      * Edita os dados do carro atual.
      *
      * @param novoNome  Novo nome/modelo do carro
@@ -54,14 +68,15 @@ public class Carro {
      * @param novaMarca Nova marca do carro
      */
 
-    public void editar(String novoNome, String novaCor, String novoAno, String novaMarca) {
+    public void editar(String novoNome, String novaCor, int novoAno, String novaMarca) {
         this.nome = novoNome;
         this.cor = novaCor;
         this.ano = novoAno;
         this.marca = novaMarca;
         System.out.println("Carro editado com sucesso.");
     }
-      /**
+
+    /**
      * Exclui um carro da lista com base no ID informado.
      *
      * @param id ID do carro a ser removido
@@ -83,51 +98,76 @@ public class Carro {
             System.out.println("Carro não encontrado.");
         }
     }
-    /**
-     * Retorna o ID do carro.
-     *
-     * @return ID do carro
-     */
 
-    
+    private void validaCampos() throws CamposInvalidosException {
+        if (getId() <= 0) {
+            throw new CamposInvalidosException("O id deve ser um numero inteiro maior que 0");
+        }
+
+        if (getNome() == null || getNome().isEmpty()) {
+            throw new CamposInvalidosException("O nome do carro deve ser informado");
+        }
+
+        if (getCor() == null || getCor().isEmpty()) {
+            throw new CamposInvalidosException("A cor do carro deve ser informada");
+        }
+
+        if (getMarca() == null || getMarca().isEmpty()) {
+            throw new CamposInvalidosException("A marca do carro deve ser informada");
+        }
+
+        if (getAno() < 1886 || getAno() > 2025) {
+            throw new CamposInvalidosException("O ano deve estar entre 1886 e 2025");
+        }
+
+
+    }
+
+    public static List<Carro> getCarros() {
+        return carros;
+    }
+
+    public static void setCarros(List<Carro> carros) {
+        Carro.carros = carros;
+    }
 
     public int getId() {
         return id;
     }
-     /**
-     * Retorna o nome/modelo do carro.
-     *
-     * @return Nome do carro
-     */
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getNome() {
         return nome;
     }
-    /**
-     * Retorna a cor do carro.
-     *
-     * @return Cor do carro
-     */
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
 
     public String getCor() {
         return cor;
     }
-     /**
-     * Retorna o ano de fabricação do carro.
-     *
-     * @return Ano do carro
-     */
 
-    public String getAno() {
+    public void setCor(String cor) {
+        this.cor = cor;
+    }
+
+    public int getAno() {
         return ano;
     }
-     /**
-     * Retorna a marca do carro.
-     *
-     * @return Marca do carro
-     */
+
+    public void setAno(int ano) {
+        this.ano = ano;
+    }
 
     public String getMarca() {
         return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
     }
 }

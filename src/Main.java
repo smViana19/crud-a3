@@ -1,19 +1,12 @@
+import Exceptions.CamposInvalidosException;
+
 import java.util.List;
 import java.util.Scanner;
-/**
- * Classe principal que executa o menu de interação com o sistema CRUD de Carros.
- */
 
 public class Main {
-     /**
-     * Método principal que exibe um menu interativo para salvar, listar, editar e excluir carros.
-     *
-     * @param args Argumentos da linha de comando (não utilizados)
-     */
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int opcao;
-
         do {
             System.out.println("\n***** MENU CRUD *****");
             System.out.println("1 - Salvar");
@@ -26,26 +19,14 @@ public class Main {
 
             switch (opcao) {
                 case 1:
-                // Cadastro de novo carro
-                    scanner.nextLine();  // Limpa buffer
-                    System.out.print("ID: ");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();
-                    System.out.print("Nome: ");
-                    String nome = scanner.nextLine();
-                    System.out.print("Cor: ");
-                    String cor = scanner.nextLine();
-                    System.out.print("Ano: ");
-                    String ano = scanner.nextLine();
-                    System.out.print("Marca: ");
-                    String marca = scanner.nextLine();
-
-                    Carro novoCarro = new Carro(id, nome, cor, ano, marca);
-                    novoCarro.salvar();
+                    Carro novoCarro = lerDadosDoCarro(scanner);
+                    try {
+                        novoCarro.salvar();
+                    } catch (CamposInvalidosException e) {
+                        throw new RuntimeException(e);
+                    }
                     break;
-
                 case 2:
-                  // Listagem dos carros cadastrados
                     List<Carro> carros = Carro.listar();
                     if (carros.isEmpty()) {
                         System.out.println("Nenhum carro cadastrado.");
@@ -56,9 +37,7 @@ public class Main {
                         }
                     }
                     break;
-
                 case 3:
-                  // Edição de um carro existente
                     System.out.print("ID do carro para editar: ");
                     int idEditar = scanner.nextInt();
                     scanner.nextLine();
@@ -77,7 +56,7 @@ public class Main {
                         System.out.print("Nova cor: ");
                         String novaCor = scanner.nextLine();
                         System.out.print("Novo ano: ");
-                        String novoAno = scanner.nextLine();
+                        int novoAno = scanner.nextInt();
                         System.out.print("Nova marca: ");
                         String novaMarca = scanner.nextLine();
 
@@ -88,23 +67,43 @@ public class Main {
                     break;
 
                 case 4:
-                  // Exclusão de um carro
                     System.out.print("ID do carro para excluir: ");
                     int idExcluir = scanner.nextInt();
                     Carro.excluir(idExcluir);
                     break;
 
                 case 0:
-                // Encerrar programa
                     System.out.println("Saindo...");
                     break;
 
                 default:
-                // Opção inválida
+
                     System.out.println("Opção inválida.");
             }
         } while (opcao != 0);
 
         scanner.close();
+    }
+
+    private static Carro lerDadosDoCarro(Scanner scanner) {
+        System.out.println("Id: ");
+        int id = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Cor: ");
+        String cor = scanner.nextLine();
+
+        System.out.print("Ano: ");
+        int ano = scanner.nextInt();
+        scanner.nextLine();
+
+        System.out.print("Marca: ");
+        String marca = scanner.nextLine();
+
+        return new Carro(id, nome, cor, ano, marca);
+
     }
 }
